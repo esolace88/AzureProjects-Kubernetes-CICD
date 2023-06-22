@@ -19,7 +19,7 @@ pipeline {
             }
             steps {
                 script {
-                    dockerImage = docker.build(DOCKER_IMAGE_NAME)
+                    sh 'docker build -t esolace88/train-schedule .'
                 }
             }
         }
