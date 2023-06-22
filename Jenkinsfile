@@ -44,11 +44,14 @@ pipeline {
                 branch 'master'
             }
             steps {
-                script {
-                  sh "sed -i 's,TEST_IMAGE_NAME,harshmanvar/node-web-app:$BUILD_NUMBER,' train-schedule-kube.yml"
-                  sh "cat train-schedule-kube.yml"
-                  sh "kubectl --kubeconfig=/home/cloud_user/config get pods"
-                  sh "kubectl --kubeconfig=/home/cloud_user/config apply -f train-schedule-kube.yml"
+                withCredentials([usernamePassword(credentialsId: 'webserver_login', usernameVariable: 'USERNAME', passwordVariable: 'USERPASS')]) {
+                    script {
+                      sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@$prod_ip "
+                      sh "sed -i 's,TEST_IMAGE_NAME,harshmanvar/node-web-app:$BUILD_NUMBER,' train-schedule-kube.yml"
+                      sh "cat train-schedule-kube.yml"
+                      sh "kubectl --kubeconfig=/home/cloud_user/config get pods"
+                      sh "kubectl --kubeconfig=/home/cloud_user/config apply -f train-schedule-kube.yml"
+                    }
                 }
             }
         }
