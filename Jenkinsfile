@@ -44,13 +44,12 @@ pipeline {
                 branch 'master'
             }
             steps {
-                input 'Deploy to Production?'
-                milestone(1)
-                kubernetesDeploy(
-                    kubeconfigId: 'kubeconfig',
-                    configs: 'train-schedule-kube.yml',
-                    enableConfigSubstitution: true
-                )
+                script {
+                  sh "sed -i 's,TEST_IMAGE_NAME,harshmanvar/node-web-app:$BUILD_NUMBER,' train-schedule-kube.yml"
+                  sh "cat train-schedule-kube.yml"
+                  sh "kubectl --kubeconfig=/home/cloud_user/config get pods"
+                  sh "kubectl --kubeconfig=/home/cloud_user/config apply -f train-schedule-kube.yml"
+                }
             }
         }
     }
