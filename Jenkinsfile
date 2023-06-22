@@ -3,6 +3,7 @@ pipeline {
     environment {
         //be sure to replace "willbla" with your own Docker Hub username
         DOCKER_IMAGE_NAME = "esolace88/train-schedule"
+        dockerImage = ''
     }
     stages {
         stage('Build') {
@@ -18,7 +19,7 @@ pipeline {
             }
             steps {
                 script {
-                    app = docker.build(DOCKER_IMAGE_NAME)
+                    dockerImage = docker.build(DOCKER_IMAGE_NAME)
                 }
             }
         }
