@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        //be sure to replace "willbla" with your own Docker Hub username
+        //be sure to replace "esolace88" with your own Docker Hub username
         DOCKER_IMAGE_NAME = "esolace88/train-schedule"
         dockerImage = ''
     }
@@ -46,11 +46,13 @@ pipeline {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'webserver_login', usernameVariable: 'USERNAME', passwordVariable: 'USERPASS')]) {
                     script {
-                      sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@$prod_ip "
-                      sh "sed -i 's,TEST_IMAGE_NAME,harshmanvar/node-web-app:$BUILD_NUMBER,' train-schedule-kube.yml"
-                      sh "cat train-schedule-kube.yml"
-                      sh "kubectl --kubeconfig=/home/cloud_user/config get pods"
-                      sh "kubectl --kubeconfig=/home/cloud_user/config apply -f train-schedule-kube.yml"
+                      sh "scp -o StrictHostKeyChecking=no train-schedule-kube.yml $USERNAME@$prod_ip:/home/$USERNAME/"
+                        try {
+                            sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@$prod_ip \"kubectl apply -f .\""
+                        } catch (err) {
+                            sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@$prod_ip \"kubectl create -f .\""
+                            echo: 'caught error: $err'
+                        }
                     }
                 }
             }
