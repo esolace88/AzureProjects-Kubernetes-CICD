@@ -44,9 +44,6 @@ pipeline {
                 branch 'master'
             }
             steps {
-                sshagent(['k8s-control']) {
-                   sh "scp -o StrictHostKeyChecking=no train-schedule-kube.yml deploy@$prod_ip:/home/deploy/" 
-                }
                 withCredentials([usernamePassword(credentialsId: 'webserver_login', usernameVariable: 'USERNAME', passwordVariable: 'USERPASS')]) {
                     script {
                         try {
