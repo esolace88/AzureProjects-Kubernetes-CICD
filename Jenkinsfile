@@ -44,11 +44,9 @@ pipeline {
                 branch 'master'
             }
             steps {
-                withCredentials([sshUserPrivateKey(credentialsId: 'k8s-control', keyFileVariable: 'control-key', usernameVariable: 'USERNAME')]) {
-                    sh "scp -o StrictHostKeyChecking=no train-schedule-kube.yml $USERNAME@$prod_ip:/home/$USERNAME/"
-                }
                 withCredentials([usernamePassword(credentialsId: 'webserver_login', usernameVariable: 'USERNAME', passwordVariable: 'USERPASS')]) {
                     script {
+                        sh "sshpass -p '$USERPASS' -v scp -o StrictHostKeyChecking=no train-schedule-kube.yml $USERNAME@$prod_ip:/home/$USERNAME/"
                         try {
                             sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@$prod_ip \"kubectl apply -f .\""
                         } catch (err) {
