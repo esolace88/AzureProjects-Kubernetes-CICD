@@ -48,11 +48,11 @@ pipeline {
                     script {
                         sh "sshpass -p '$USERPASS' -v scp -o StrictHostKeyChecking=no train-schedule-kube.yml  $USERNAME@$prod_ip:/home/$USERNAME/"
                         try {
-                            sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@$prod_ip \"kubectl apply -f .\""
-                        } catch (err) {
                             sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@$prod_ip \"kubectl create -f .\""
+                        } catch (err) {
                             echo: 'caught error: $err'
                         }
+                            sh "sshpass -p '$USERPASS' -v ssh -o StrictHostKeyChecking=no $USERNAME@$prod_ip \"kubectl apply -f .\""
                     }
                 }
             }
