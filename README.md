@@ -1,6 +1,9 @@
-# cicd-pipeline-train-schedule-kubernetes - test
+# AzureProjects-Kubernetes-CICD
 
-This is a simple train schedule app written using nodejs. It is intended to be used as a sample application for a series of hands-on learning activities.
+Please refer to the following repo for the step-by-step process on how to deploy a CI/CD environment. 
+
+
+## For Testing of the Application ## 
 
 ## Running the app
 
