@@ -1,6 +1,6 @@
 # AzureProjects-Kubernetes-CICD
 
-Please refer to the following repo for the step-by-step process on how to deploy a CI/CD environment. 
+Please refer to the following repo for the step-by-step process on how to deploy a CI/CD environment. [Project Repo](https://github.com/esolace88/Azure-Projects/tree/main/Kubernetes-CICD)
 
 
 ## For Testing of the Application ## 
